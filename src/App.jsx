@@ -11,15 +11,14 @@ import {
   CartesianGrid,
   BarChart,
   Bar,
-  Global,
   Tooltip,
   Legend,
 } from 'recharts';
 
 const App = (props) => {
-  Global.isSsr = true;
-  const { blockData, chartType } = props;
-  const [chart] = useState(chartType);
+  const { blockData, chartDetails } = props;
+  const [chart, color] = chartDetails.split(' ');
+  // const color = chartDetails.split(' ');
 
   const data = blockData[0].children.map((val1, index) => ({
     name: val1.content,
@@ -54,7 +53,7 @@ const App = (props) => {
           <Line
             type="monotone"
             dataKey="value"
-            stroke="#0088FE"
+            stroke={color}
             isAnimationActive={false}
             activeDot={{ r: 8 }}
           />
@@ -70,7 +69,7 @@ const App = (props) => {
             cx={200}
             cy={200}
             outerRadius={120}
-            fill="#0088FE"
+            fill={color}
             label
           />
         </PieChart>
@@ -96,8 +95,8 @@ const App = (props) => {
           <Area
             type="monotone"
             dataKey="value"
-            stroke="#0088FE"
-            fill="#0088FE"
+            stroke={color}
+            fill={color}
             isAnimationActive={false}
           />
           )
@@ -121,8 +120,8 @@ const App = (props) => {
           <YAxis />
           <Bar
             dataKey="value"
-            fill="#0088FE"
-            stroke="#0088FE"
+            fill={color}
+            stroke={color}
             key="value"
             isAnimationActive={false}
             barSize={30}

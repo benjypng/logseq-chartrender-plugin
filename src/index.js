@@ -31,11 +31,11 @@ const main = async () => {
     });
 
     const data = renderBlock.children[0].children;
-    const chartType = renderBlock.children[0].content;
+    const chartDetails = renderBlock.children[0].content;
 
     // Use React to render board
     const board = ReactDOMServer.renderToStaticMarkup(
-      <App blockData={data} chartType={chartType} />
+      <App blockData={data} chartDetails={chartDetails} />
     );
 
     // Set div for renderer to use
