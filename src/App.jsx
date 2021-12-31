@@ -18,7 +18,6 @@ import {
 const App = (props) => {
   const { blockData, chartDetails } = props;
   const [chart, color] = chartDetails.split(' ');
-  // const color = chartDetails.split(' ');
 
   const data = blockData[0].children.map((val1, index) => ({
     name: val1.content,
@@ -124,7 +123,6 @@ const App = (props) => {
             stroke={color}
             key="value"
             isAnimationActive={false}
-            barSize={30}
           />
         </BarChart>
       )}
