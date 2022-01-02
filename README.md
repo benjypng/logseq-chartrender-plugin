@@ -8,6 +8,8 @@ Do look at the videos below to see how it works.
 
 ![](/screenshots/demo2.gif)
 
+![](/screenshots/demo3.gif)
+
 # Credits
 
 [Recharts](https://recharts.org/en-US/)
