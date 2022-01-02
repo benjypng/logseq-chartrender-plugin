@@ -40,7 +40,7 @@ const main = async () => {
 
     // Set div for renderer to use
     const cmBoard = (board) => {
-      return `<div>${board}</div>`;
+      return `<div id="${chartId}" data-slot-id="${slot}" data-kanban-id="${chartId}">${board}</div>`;
     };
 
     if (!type.startsWith(':charts')) return;
