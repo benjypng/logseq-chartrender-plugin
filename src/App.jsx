@@ -13,6 +13,8 @@ import {
   Bar,
   Tooltip,
   Legend,
+  Label,
+  LabelList,
 } from 'recharts';
 
 const App = (props) => {
@@ -61,7 +63,7 @@ const App = (props) => {
             height={height}
             data={data}
             isAnimationActive={false}
-            margin={{ top: 10, right: 5, left: 5, bottom: 5 }}
+            margin={{ top: 20, right: 5, left: 10, bottom: 20 }}
           >
             {/* <Tooltip wrapperStyle={{ width: 100, backgroundColor: '#ccc' }} />
             <Legend
@@ -76,8 +78,20 @@ const App = (props) => {
               }}
             /> */}
             <CartesianGrid strokeDasharray="1 1" />
-            <XAxis dataKey="name" />
-            <YAxis />
+            <XAxis dataKey="name">
+              <Label
+                value={blockData[0].content}
+                offset={-10}
+                position="insideBottom"
+              />
+            </XAxis>
+            <YAxis
+              label={{
+                value: `${blockData[1].content}`,
+                angle: -90,
+                position: 'insideBottomLeft',
+              }}
+            />
             <Line
               type="monotone"
               dataKey="value"
@@ -109,16 +123,23 @@ const App = (props) => {
             height={height}
             data={data}
             isAnimationActive={false}
-            margin={{
-              top: 10,
-              right: 5,
-              left: 5,
-              bottom: 5,
-            }}
+            margin={{ top: 20, right: 5, left: 10, bottom: 20 }}
           >
             <CartesianGrid strokeDasharray="1 1" />
-            <XAxis dataKey="name" />
-            <YAxis />
+            <XAxis dataKey="name">
+              <Label
+                value={blockData[0].content}
+                offset={-10}
+                position="insideBottom"
+              />
+            </XAxis>
+            <YAxis
+              label={{
+                value: `${blockData[1].content}`,
+                angle: -90,
+                position: 'insideBottomLeft',
+              }}
+            />
             (
             <Area
               type="monotone"
@@ -136,16 +157,23 @@ const App = (props) => {
             width={width}
             height={height}
             data={data}
-            margin={{
-              top: 10,
-              right: 5,
-              left: 5,
-              bottom: 5,
-            }}
+            margin={{ top: 20, right: 5, left: 10, bottom: 20 }}
           >
             <CartesianGrid strokeDasharray="1 1" />
-            <XAxis dataKey="name" />
-            <YAxis />
+            <XAxis dataKey="name">
+              <Label
+                value={blockData[0].content}
+                offset={-10}
+                position="insideBottom"
+              />
+            </XAxis>
+            <YAxis
+              label={{
+                value: `${blockData[1].content}`,
+                angle: -90,
+                position: 'insideBottomLeft',
+              }}
+            />
             <Bar
               dataKey="value"
               fill={color}
