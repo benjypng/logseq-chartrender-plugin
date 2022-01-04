@@ -35,25 +35,44 @@ const App = (props) => {
       </div>
     );
   } else {
-    const loadData = (data) => {
-      return data[0].children.map((val1, index) => ({
-        name: val1.content,
-        value: parseInt(data[1].children[index].content),
-      }));
-    };
-
-    const getChartDetails = (details) => {
+    const loadData = (data, details) => {
       let [chart, color, height] = details.split(' ');
+      let chartData;
+
+      // Get X and Y values
+      if (chart === 'stackedbar') {
+        chartData = data[0].children.map((val1, index) => ({
+          name: val1.content,
+          valueZero: parseInt(data[1].children[index].content.split(',')[0]),
+          valueOne: parseInt(data[1].children[index].content.split(',')[1]),
+        }));
+      } else {
+        chartData = data[0].children.map((val1, index) => ({
+          name: val1.content,
+          value: parseInt(data[1].children[index].content),
+        }));
+      }
+
+      // Get other chart details
       height = parseInt(height);
       const width = height * 1.78;
-      return { chart, color, height, width };
+
+      // Return values
+      return { chartData, chart, color, height, width };
     };
 
-    const [data] = useState(loadData(blockData));
-    const [chart] = useState(getChartDetails(chartDetails).chart);
-    const [color] = useState(getChartDetails(chartDetails).color);
-    const [height] = useState(getChartDetails(chartDetails).height);
-    const [width] = useState(getChartDetails(chartDetails).width);
+    // const getChartDetails = (details) => {
+    //   let [chart, color, height] = details.split(' ');
+    //   height = parseInt(height);
+    //   const width = height * 1.78;
+    //   return { chart, color, height, width };
+    // };
+
+    const [data] = useState(loadData(blockData, chartDetails).chartData);
+    const [chart] = useState(loadData(blockData, chartDetails).chart);
+    const [color] = useState(loadData(blockData, chartDetails).color);
+    const [height] = useState(loadData(blockData, chartDetails).height);
+    const [width] = useState(loadData(blockData, chartDetails).width);
 
     return (
       <React.Fragment>
@@ -179,6 +198,47 @@ const App = (props) => {
               fill={color}
               stroke={color}
               key="value"
+              isAnimationActive={false}
+            />
+          </BarChart>
+        )}
+
+        {chart === 'stackedbar' && (
+          <BarChart
+            width={width}
+            height={height}
+            data={data}
+            margin={{ top: 20, right: 5, left: 10, bottom: 20 }}
+          >
+            <CartesianGrid strokeDasharray="1 1" />
+            <XAxis dataKey="name">
+              <Label
+                value={blockData[0].content}
+                offset={-10}
+                position="insideBottom"
+              />
+            </XAxis>
+            <YAxis
+              label={{
+                value: `${blockData[1].content}`,
+                angle: -90,
+                position: 'insideBottomLeft',
+              }}
+            />
+            <Bar
+              dataKey="valueZero"
+              fill={color}
+              stroke={color}
+              key="valueZero"
+              stackId="a"
+              isAnimationActive={false}
+            />
+            <Bar
+              dataKey="valueOne"
+              fill="gray"
+              stroke="gray"
+              key="valueOne"
+              stackId="a"
               isAnimationActive={false}
             />
           </BarChart>
