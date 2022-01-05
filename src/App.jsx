@@ -46,6 +46,22 @@ const App = (props) => {
           valueZero: parseInt(data[1].children[index].content.split(',')[0]),
           valueOne: parseInt(data[1].children[index].content.split(',')[1]),
         }));
+      } else if (chart === 'percentbar') {
+        chartData = data[0].children.map((val1, index) => ({
+          name: val1.content,
+          valueZero: (
+            (parseInt(data[1].children[index].content.split(',')[0]) /
+              parseInt(data[1].children[index].content.split(',')[1])) *
+            100
+          ).toFixed(2),
+          valueOne:
+            100 -
+            (
+              (parseInt(data[1].children[index].content.split(',')[0]) /
+                parseInt(data[1].children[index].content.split(',')[1])) *
+              100
+            ).toFixed(2),
+        }));
       } else {
         chartData = data[0].children.map((val1, index) => ({
           name: val1.content,
@@ -241,6 +257,51 @@ const App = (props) => {
               stackId="a"
               isAnimationActive={false}
             />
+          </BarChart>
+        )}
+
+        {chart === 'percentbar' && (
+          <BarChart
+            width={width}
+            height={height}
+            data={data}
+            margin={{ top: 20, right: 5, left: 10, bottom: 20 }}
+          >
+            <CartesianGrid strokeDasharray="1 1" />
+            <XAxis dataKey="name">
+              <Label
+                value={blockData[0].content}
+                offset={-10}
+                position="insideBottom"
+              />
+            </XAxis>
+            <YAxis
+              label={{
+                value: `${blockData[1].content}`,
+                angle: -90,
+                position: 'insideBottomLeft',
+              }}
+              unit={'%'}
+            />
+            <Bar
+              dataKey="valueZero"
+              fill={color}
+              stroke={color}
+              key="valueZero"
+              stackId="a"
+              isAnimationActive={false}
+            />
+            <Bar
+              dataKey="valueOne"
+              fill="lightgray"
+              stroke="lightgray"
+              key="valueOne"
+              stackId="a"
+              isAnimationActive={false}
+            >
+              {' '}
+              <LabelList dataKey="valueZero" position="insideTop" />
+            </Bar>
           </BarChart>
         )}
       </React.Fragment>
