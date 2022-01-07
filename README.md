@@ -6,7 +6,7 @@ Do look at the videos below to see how it works.
 
 ![](/screenshots/demo3.gif)
 
-![](/screenshots/percentbar.jpg)
+![](/screenshots/percentbar.png)
 
 # Usage
 
