@@ -43,34 +43,34 @@ const App = (props) => {
       if (chart === 'stackedbar') {
         chartData = data[0].children.map((val1, index) => ({
           name: val1.content,
-          valueZero: parseInt(data[1].children[index].content.split(',')[0]),
-          valueOne: parseInt(data[1].children[index].content.split(',')[1]),
+          valueZero: parseFloat(data[1].children[index].content.split(',')[0]),
+          valueOne: parseFloat(data[1].children[index].content.split(',')[1]),
         }));
       } else if (chart === 'percentbar') {
         chartData = data[0].children.map((val1, index) => ({
           name: val1.content,
           valueZero: (
-            (parseInt(data[1].children[index].content.split(',')[0]) /
-              parseInt(data[1].children[index].content.split(',')[1])) *
+            (parseFloat(data[1].children[index].content.split(',')[0]) /
+              parseFloat(data[1].children[index].content.split(',')[1])) *
             100
           ).toFixed(2),
           valueOne:
             100 -
             (
-              (parseInt(data[1].children[index].content.split(',')[0]) /
-                parseInt(data[1].children[index].content.split(',')[1])) *
+              (parseFloat(data[1].children[index].content.split(',')[0]) /
+                parseFloat(data[1].children[index].content.split(',')[1])) *
               100
             ).toFixed(2),
         }));
       } else {
         chartData = data[0].children.map((val1, index) => ({
           name: val1.content,
-          value: parseInt(data[1].children[index].content),
+          value: parseFloat(data[1].children[index].content),
         }));
       }
 
       // Get other chart details
-      height = parseInt(height);
+      height = parseFloat(height);
       const width = height * 1.78;
 
       // Return values
@@ -79,7 +79,7 @@ const App = (props) => {
 
     // const getChartDetails = (details) => {
     //   let [chart, color, height] = details.split(' ');
-    //   height = parseInt(height);
+    //   height = parseFloat(height);
     //   const width = height * 1.78;
     //   return { chart, color, height, width };
     // };
