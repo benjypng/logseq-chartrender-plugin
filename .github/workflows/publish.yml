@@ -2,7 +2,9 @@ name: Build plugin
 
 on:
   push:
-    branches: ['master']
+    # Sequence of patterns matched against refs/tags
+    tags:
+      - '*' # Push events to matching any tag format, i.e. 1.0, 20.15.10
 
 env:
   PLUGIN_NAME: logseq-chartrender-calendar
@@ -20,7 +22,7 @@ jobs:
       - name: Build
         id: build
         run: |
-          npm i && npm run build
+          npm i && run build
           mkdir ${{ env.PLUGIN_NAME }}
           cp README.md package.json icon.svg ${{ env.PLUGIN_NAME }}
           mv dist ${{ env.PLUGIN_NAME }}
