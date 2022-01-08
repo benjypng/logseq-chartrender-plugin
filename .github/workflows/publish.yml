@@ -4,10 +4,10 @@ on:
   push:
     # Sequence of patterns matched against refs/tags
     tags:
-      - '*' # Push events to matching any tag format, i.e. 1.0, 20.15.10
+      - '1.82' # Push events to matching any tag format, i.e. 1.0, 20.15.10
 
 env:
-  PLUGIN_NAME: logseq-journals-calendar
+  PLUGIN_NAME: logseq-chartrender-calendar
 
 jobs:
   build:
