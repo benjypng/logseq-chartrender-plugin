@@ -1,6 +1,6 @@
 {
   "name": "logseq-chartrender-plugin",
-  "version": "1.83",
+  "version": "1.84",
   "description": "",
   "main": "dist/index.html",
   "targets": {
