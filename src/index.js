@@ -26,6 +26,8 @@ const main = async () => {
     const id = type.split('_')[1]?.trim();
     const chartId = `charts_${id}`;
 
+    if (!type.startsWith(':charts_')) return;
+
     const renderBlock = await logseq.Editor.getBlock(uuid, {
       includeChildren: true,
     });
@@ -40,10 +42,9 @@ const main = async () => {
 
     // Set div for renderer to use
     const cmBoard = (board) => {
-      return `<div id="${chartId}" data-slot-id="${slot}" data-chart-id="${chartId}">${board}</div>`;
+      return `<div id="${chartId}" data-slot-id="${slot}" data-chart-id="${chartId}" data-block-uuid="${uuid}">${board}</div>`;
     };
 
-    if (!type.startsWith(':charts_')) return;
     logseq.provideUI({
       key: `${chartId}`,
       slot,
