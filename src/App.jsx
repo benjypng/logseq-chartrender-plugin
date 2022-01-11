@@ -118,6 +118,7 @@ const App = (props) => {
                 value={blockData[0].content}
                 offset={-10}
                 position="insideBottom"
+                fill={'gray'}
               />
             </XAxis>
             <YAxis
@@ -125,7 +126,10 @@ const App = (props) => {
                 value: `${blockData[1].content}`,
                 angle: -90,
                 position: 'insideBottomLeft',
+                fill: 'gray',
               }}
+              type="number"
+              domain={['dataMin', 'dataMax']}
             />
             <Line
               type="monotone"
