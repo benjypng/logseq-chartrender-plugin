@@ -2,7 +2,7 @@
 
 # Overview
 
-Create pie, line, bar, area, stacked bar and progress charts using block data. Allows changing of chart type and colours on the fly!
+Create pie, line, bar, area, stacked bar and percentage-bar charts using block data. Allows changing of chart type and colours on the fly!
 
 Do look at the videos below to see how it works.
 
