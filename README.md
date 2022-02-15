@@ -1,4 +1,4 @@
-<iframe src="https://github.com/sponsors/hkgnp/card" title="Sponsor hkgnp" height="225" width="600" style="border: 0;"></iframe>
+[:heart: Sponsor this project on Github](https://github.com/sponsors/hkgnp)
 
 # Overview
 
