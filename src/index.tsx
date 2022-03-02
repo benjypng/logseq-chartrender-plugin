@@ -3,7 +3,8 @@ import { BlockEntity } from '@logseq/libs/dist/LSPlugin.user';
 import React from 'react';
 import ReactDOMServer from 'react-dom/server';
 import App from './App';
-import { createChart } from './CreateChart';
+import { createChart } from './Utils';
+import Instructions from './Instructions';
 
 const main = async () => {
   console.log('Chart Render plugin loaded');
@@ -38,28 +39,33 @@ const main = async () => {
     const chartData: any[] = childBlock.children;
     const chartOptions: string = childBlock.content;
 
-    const {
-      chartType,
-      chartObj,
-      colour,
-      chartHeight,
-      chartWidth,
-      xAxisLabel,
-      yAxisLabel,
-    } = createChart(chartData, chartOptions);
+    let board = '';
+    if (chartData.length > 0 && chartOptions.length > 0) {
+      const {
+        chartType,
+        chartObj,
+        colour,
+        chartHeight,
+        chartWidth,
+        xAxisLabel,
+        yAxisLabel,
+      } = createChart(chartData, chartOptions);
 
-    // Use React to render board
-    const board = ReactDOMServer.renderToStaticMarkup(
-      <App
-        chartType={chartType}
-        chartObj={chartObj}
-        colour={colour}
-        chartHeight={chartHeight}
-        chartWidth={chartWidth}
-        xAxisLabel={xAxisLabel}
-        yAxisLabel={yAxisLabel}
-      />
-    );
+      // Use React to render board
+      board = ReactDOMServer.renderToStaticMarkup(
+        <App
+          chartType={chartType}
+          chartObj={chartObj}
+          colour={colour}
+          chartHeight={chartHeight}
+          chartWidth={chartWidth}
+          xAxisLabel={xAxisLabel}
+          yAxisLabel={yAxisLabel}
+        />
+      );
+    } else {
+      board = ReactDOMServer.renderToStaticMarkup(<Instructions />);
+    }
 
     // Set div for renderer to use
     const cmBoard = (board: string) => {

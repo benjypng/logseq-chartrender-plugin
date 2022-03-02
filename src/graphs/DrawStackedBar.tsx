@@ -1,26 +1,25 @@
-import React from 'react';
-import { LineChart, CartesianGrid, XAxis, Label, YAxis, Line } from 'recharts';
+import { BarChart, CartesianGrid, XAxis, Label, YAxis, Bar } from 'recharts';
 import { randomColours } from '../Utils';
 
-const DrawLine = (props) => {
+const DrawStackedBar = (props) => {
   const { chartObj, colour, chartHeight, chartWidth, xAxisLabel, yAxisLabel } =
     props;
 
-  let lineArr = [];
+  let barArr = [];
   for (let i = 0; i < chartObj.mostValuesInSeries; i++) {
-    lineArr.push(
-      <Line
-        type="monotone"
+    barArr.push(
+      <Bar
         dataKey={`value${i}`}
-        stroke={chartObj.mostValuesInSeries === 1 ? colour : randomColours()}
+        fill={chartObj.mostValuesInSeries === 1 ? colour : randomColours()}
+        stroke={colour}
+        stackId="a"
         isAnimationActive={false}
-        activeDot={{ r: 8 }}
       />
     );
   }
 
   return (
-    <LineChart
+    <BarChart
       width={chartWidth}
       height={chartHeight}
       data={chartObj}
@@ -28,26 +27,18 @@ const DrawLine = (props) => {
     >
       <CartesianGrid strokeDasharray="1 1" />
       <XAxis dataKey="name">
-        <Label
-          value={xAxisLabel}
-          offset={-10}
-          position="insideBottom"
-          fill={'gray'}
-        />
+        <Label value={xAxisLabel} offset={-10} position="insideBottom" />
       </XAxis>
       <YAxis
         label={{
           value: yAxisLabel,
           angle: -90,
           position: 'insideBottomLeft',
-          fill: 'gray',
         }}
-        type="number"
-        domain={['dataMin', 'dataMax']}
       />
-      {lineArr}
-    </LineChart>
+      {barArr}
+    </BarChart>
   );
 };
 
-export default DrawLine;
+export default DrawStackedBar;
