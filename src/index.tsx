@@ -1,22 +1,22 @@
-import '@logseq/libs';
-import { BlockEntity } from '@logseq/libs/dist/LSPlugin.user';
-import React from 'react';
-import ReactDOMServer from 'react-dom/server';
-import App from './App';
-import { createChart } from './Utils';
-import Instructions from './Instructions';
+import "@logseq/libs";
+import { BlockEntity } from "@logseq/libs/dist/LSPlugin.user";
+import React from "react";
+import ReactDOMServer from "react-dom/server";
+import App from "./App";
+import { createChart } from "./Utils";
+import Instructions from "./Instructions";
 
 const main = async () => {
-  console.log('Chart Render plugin loaded');
+  console.log("Chart Render plugin loaded");
 
   // Generate unique identifier
   const uniqueIdentifier = () =>
     Math.random()
       .toString(36)
-      .replace(/[^a-z]+/g, '');
+      .replace(/[^a-z]+/g, "");
 
   // Insert renderer upon slash command
-  logseq.Editor.registerSlashCommand('chart render', async () => {
+  logseq.Editor.registerSlashCommand("chart render", async () => {
     await logseq.Editor.insertAtEditingCursor(
       `{{renderer :charts_${uniqueIdentifier()}}}`
     );
@@ -26,10 +26,10 @@ const main = async () => {
     // Get uuid of payload so that child blocks can be retrieved for the board
     const uuid = payload.uuid;
     const [type] = payload.arguments;
-    const id = type.split('_')[1]?.trim();
-    const chartId = `charts_${id}`;
+    const id = type.split("_")[1]?.trim();
+    const chartId = `charts_${id}_${slot}`;
 
-    if (!type.startsWith(':charts_')) return;
+    if (!type.startsWith(":charts_")) return;
 
     const renderBlock = await logseq.Editor.getBlock(uuid, {
       includeChildren: true,
@@ -39,7 +39,7 @@ const main = async () => {
     const chartData: any[] = childBlock.children;
     const chartOptions: string = childBlock.content;
 
-    let board = '';
+    let board = "";
     if (chartData.length > 0 && chartOptions.length > 0) {
       const {
         chartType,
