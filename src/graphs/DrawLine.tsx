@@ -1,6 +1,6 @@
 import { LineChart, CartesianGrid, XAxis, Label, YAxis, Line } from "recharts";
 import { randomColours } from "../Utils";
-import { ChartProps } from "~/types";
+import { GraphProps } from "~/types";
 
 const DrawLine = ({
   chartData,
@@ -10,7 +10,7 @@ const DrawLine = ({
   xAxisLabel,
   yAxisLabel,
   mostValuesInSeries,
-}: ChartProps) => {
+}: GraphProps) => {
   if (!mostValuesInSeries) return;
 
   const lineArr = [];

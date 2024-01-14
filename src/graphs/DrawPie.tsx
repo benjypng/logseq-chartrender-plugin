@@ -1,15 +1,13 @@
 import { PieChart, Pie } from 'recharts';
-import { ChartDataProps } from '~/types';
+import { GraphProps } from '~/types';
 
-const DrawPie = ({ }: ChartDataProps) => {
-  const { chartObj, colour } = props;
-
+const DrawPie = ({ chartData, colour }: GraphProps) => {
   return (
     <PieChart width={500} height={450}>
       <Pie
         dataKey="value"
         isAnimationActive={false}
-        data={chartObj}
+        data={chartData}
         cx={220}
         cy={220}
         outerRadius={150}

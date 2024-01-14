@@ -1,16 +1,16 @@
 import { BarChart, CartesianGrid, XAxis, Label, YAxis, Bar } from 'recharts';
 import { randomColours } from '../Utils';
+import { GraphProps } from '~/types';
 
-const DrawStackedBar = (props) => {
-  const { chartObj, colour, chartHeight, chartWidth, xAxisLabel, yAxisLabel } =
-    props;
+const DrawStackedBar = ({ mostValuesInSeries, colour, chartWidth, chartHeight, chartData, xAxisLabel, yAxisLabel }: GraphProps) => {
+  if (!mostValuesInSeries) return;
 
   let barArr = [];
-  for (let i = 0; i < chartObj.mostValuesInSeries; i++) {
+  for (let i = 0; i < mostValuesInSeries; i++) {
     barArr.push(
       <Bar
         dataKey={`value${i}`}
-        fill={chartObj.mostValuesInSeries === 1 ? colour : randomColours()}
+        fill={mostValuesInSeries === 1 ? colour : randomColours()}
         stroke={colour}
         stackId="a"
         isAnimationActive={false}
@@ -22,7 +22,7 @@ const DrawStackedBar = (props) => {
     <BarChart
       width={chartWidth}
       height={chartHeight}
-      data={chartObj}
+      data={chartData}
       margin={{ top: 20, right: 5, left: 10, bottom: 20 }}
     >
       <CartesianGrid strokeDasharray="1 1" />

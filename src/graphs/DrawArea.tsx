@@ -1,14 +1,12 @@
 import { AreaChart, CartesianGrid, XAxis, Label, YAxis, Area } from "recharts";
+import { GraphProps } from "~/types";
 
-const DrawArea = (props) => {
-  const { chartObj, colour, chartHeight, chartWidth, xAxisLabel, yAxisLabel } =
-    props;
-
+const DrawArea = ({ chartWidth, chartHeight, chartData, yAxisLabel, xAxisLabel, colour }: GraphProps) => {
   return (
     <AreaChart
       width={chartWidth}
       height={chartHeight}
-      data={chartObj}
+      data={chartData}
       margin={{ top: 20, right: 5, left: 10, bottom: 20 }}
     >
       <CartesianGrid strokeDasharray="1 1" />

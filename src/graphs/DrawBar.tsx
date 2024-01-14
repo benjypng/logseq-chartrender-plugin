@@ -1,17 +1,16 @@
-import React from 'react';
 import { BarChart, CartesianGrid, XAxis, Label, YAxis, Bar } from 'recharts';
 import { randomColours } from '../Utils';
+import { GraphProps } from '~/types';
 
-const DrawBar = (props) => {
-  const { chartObj, colour, chartHeight, chartWidth, xAxisLabel, yAxisLabel } =
-    props;
+const DrawBar = ({ mostValuesInSeries, chartData, colour, chartWidth, chartHeight, xAxisLabel, yAxisLabel }: GraphProps) => {
+  if (!mostValuesInSeries) return;
 
   let barArr = [];
-  for (let i = 0; i < chartObj.mostValuesInSeries; i++) {
+  for (let i = 0; i < mostValuesInSeries; i++) {
     barArr.push(
       <Bar
         dataKey={`value${i}`}
-        fill={chartObj.mostValuesInSeries === 1 ? colour : randomColours()}
+        fill={mostValuesInSeries === 1 ? colour : randomColours()}
         stroke={colour}
         isAnimationActive={false}
       />
@@ -22,7 +21,7 @@ const DrawBar = (props) => {
     <BarChart
       width={chartWidth}
       height={chartHeight}
-      data={chartObj}
+      data={chartData}
       margin={{ top: 20, right: 5, left: 10, bottom: 20 }}
     >
       <CartesianGrid strokeDasharray="1 1" />

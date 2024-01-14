@@ -7,16 +7,15 @@ import {
   Bar,
   LabelList,
 } from 'recharts';
+import { GraphProps } from '~/types';
 
-const DrawPercentBar = (props) => {
-  const { chartObj, colour, chartHeight, chartWidth, xAxisLabel, yAxisLabel } =
-    props;
+const DrawPercentBar = ({ chartWidth, chartHeight, chartData, xAxisLabel, yAxisLabel, colour }: GraphProps) => {
 
   return (
     <BarChart
       width={chartWidth}
       height={chartHeight}
-      data={chartObj}
+      data={chartData}
       margin={{ top: 20, right: 5, left: 10, bottom: 20 }}
     >
       <CartesianGrid strokeDasharray="1 1" />
