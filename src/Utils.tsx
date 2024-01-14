@@ -65,7 +65,7 @@ export const createChart = (
   chartBlocks: BlockEntity[],
   chartOptions: string,
 ): ChartProps | undefined => {
-  const [chartType, colour, height] = chartOptions.split(" ") as [
+  const [chartType, colour, height, reverse] = chartOptions.split(" ") as [
     string,
     string,
     string,
@@ -91,11 +91,17 @@ export const createChart = (
   const chartDataZeroChildren = chartBlocks[0].children as BlockEntity[];
   const chartDataOneChildren = chartBlocks[1].children as BlockEntity[];
 
-  const { data: chartData, mostValuesInSeries } = returnChartData(
+  let { data, mostValuesInSeries } = returnChartData(
     chartType,
     chartDataZeroChildren,
     chartDataOneChildren,
   );
+
+  let chartData;
+  if (reverse) {
+    chartData = data.reverse()
+  }
+  chartData = data
 
   return {
     colour,
