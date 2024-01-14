@@ -1,40 +1,40 @@
-import React from 'react';
-import DrawArea from './graphs/DrawArea';
-import DrawBar from './graphs/DrawBar';
-import DrawLine from './graphs/DrawLine';
-import DrawPercentBar from './graphs/DrawPercentBar';
-import DrawPie from './graphs/DrawPie';
-import DrawStackedBar from './graphs/DrawStackedBar';
+import DrawArea from "./graphs/DrawArea";
+import DrawBar from "./graphs/DrawBar";
+import DrawLine from "./graphs/DrawLine";
+import DrawPercentBar from "./graphs/DrawPercentBar";
+import DrawPie from "./graphs/DrawPie";
+import DrawStackedBar from "./graphs/DrawStackedBar";
+import { ChartProps } from "./types";
 
-const App = (props) => {
-  const {
-    chartType,
-    chartObj,
-    colour,
-    chartHeight,
-    chartWidth,
-    xAxisLabel,
-    yAxisLabel,
-  } = props;
-
+const Chart = ({
+  chartType,
+  chartData,
+  colour,
+  chartHeight,
+  chartWidth,
+  xAxisLabel,
+  yAxisLabel,
+  mostValuesInSeries
+}: ChartProps) => {
   return (
-    <React.Fragment>
-      {chartType === 'line' && (
+    <>
+      {chartType === "line" && (
         <DrawLine
-          chartObj={chartObj}
+          chartData={chartData}
           colour={colour}
           chartHeight={chartHeight}
           chartWidth={chartWidth}
           xAxisLabel={xAxisLabel}
           yAxisLabel={yAxisLabel}
+          mostValuesInSeries={mostValuesInSeries}
         />
       )}
 
-      {chartType === 'pie' && <DrawPie chartObj={chartObj} colour={colour} />}
+      {chartType === "pie" && <DrawPie chartData={chartData} colour={colour} />}
 
-      {chartType === 'area' && (
+      {chartType === "area" && (
         <DrawArea
-          chartObj={chartObj}
+          chartData={chartData}
           colour={colour}
           chartHeight={chartHeight}
           chartWidth={chartWidth}
@@ -43,9 +43,9 @@ const App = (props) => {
         />
       )}
 
-      {chartType === 'bar' && (
+      {chartType === "bar" && (
         <DrawBar
-          chartObj={chartObj}
+          chartData={chartData}
           colour={colour}
           chartHeight={chartHeight}
           chartWidth={chartWidth}
@@ -54,9 +54,9 @@ const App = (props) => {
         />
       )}
 
-      {chartType === 'stackedbar' && (
+      {chartType === "stackedbar" && (
         <DrawStackedBar
-          chartObj={chartObj}
+          chartData={chartData}
           colour={colour}
           chartHeight={chartHeight}
           chartWidth={chartWidth}
@@ -65,9 +65,9 @@ const App = (props) => {
         />
       )}
 
-      {chartType === 'percentbar' && (
+      {chartType === "percentbar" && (
         <DrawPercentBar
-          chartObj={chartObj}
+          chartData={chartData}
           colour={colour}
           chartHeight={chartHeight}
           chartWidth={chartWidth}
@@ -75,8 +75,8 @@ const App = (props) => {
           yAxisLabel={yAxisLabel}
         />
       )}
-    </React.Fragment>
+    </>
   );
 };
 
-export default App;
+export default Chart;

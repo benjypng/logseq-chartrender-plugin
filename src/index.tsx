@@ -1,67 +1,64 @@
 import "@logseq/libs";
 import { BlockEntity } from "@logseq/libs/dist/LSPlugin.user";
-import React from "react";
 import ReactDOMServer from "react-dom/server";
-import App from "./App";
 import { createChart } from "./Utils";
 import Instructions from "./Instructions";
+import Chart from "./Chart";
 
 const main = async () => {
   console.log("Chart Render plugin loaded");
 
-  // Generate unique identifier
-  const uniqueIdentifier = () =>
-    Math.random()
-      .toString(36)
-      .replace(/[^a-z]+/g, "");
-
   // Insert renderer upon slash command
-  logseq.Editor.registerSlashCommand("chart render", async () => {
-    await logseq.Editor.insertAtEditingCursor(
-      `{{renderer :charts_${uniqueIdentifier()}}}`
-    );
+  logseq.Editor.registerSlashCommand("Render chart", async (e) => {
+    await logseq.Editor.insertAtEditingCursor(`{{renderer :charts_${e.uuid}}}`);
   });
 
   logseq.App.onMacroRendererSlotted(async ({ slot, payload }) => {
     // Get uuid of payload so that child blocks can be retrieved for the board
     const uuid = payload.uuid;
     const [type] = payload.arguments;
-    const id = type.split("_")[1]?.trim();
-    const chartId = `charts_${id}_${slot}`;
+    const chartId = `charts_${uuid}_${slot}`;
 
-    if (!type.startsWith(":charts_")) return;
+    if (!type || !type.startsWith(":charts_")) return;
 
     const renderBlock = await logseq.Editor.getBlock(uuid, {
       includeChildren: true,
     });
+    if (!renderBlock || !renderBlock.children) return;
 
     const childBlock = renderBlock.children[0] as BlockEntity;
-    const chartData: any[] = childBlock.children;
-    const chartOptions: string = childBlock.content;
+    const chartBlocks = childBlock.children as BlockEntity[];
+    const chartOptions = childBlock.content;
+    if (!chartBlocks || !chartOptions) return;
 
     let board = "";
-    if (chartData.length > 0 && chartOptions.length > 0) {
+    if (chartBlocks.length > 0 && chartOptions.length > 0) {
+      const chart = createChart(chartBlocks, chartOptions);
+      if (!chart) return;
+
       const {
         chartType,
-        chartObj,
+        chartData,
         colour,
         chartHeight,
         chartWidth,
         xAxisLabel,
         yAxisLabel,
-      } = createChart(chartData, chartOptions);
+        mostValuesInSeries,
+      } = chart;
 
       // Use React to render board
       board = ReactDOMServer.renderToStaticMarkup(
-        <App
+        <Chart
           chartType={chartType}
-          chartObj={chartObj}
+          chartData={chartData}
           colour={colour}
           chartHeight={chartHeight}
           chartWidth={chartWidth}
           xAxisLabel={xAxisLabel}
           yAxisLabel={yAxisLabel}
-        />
+          mostValuesInSeries={mostValuesInSeries}
+        />,
       );
     } else {
       board = ReactDOMServer.renderToStaticMarkup(<Instructions />);

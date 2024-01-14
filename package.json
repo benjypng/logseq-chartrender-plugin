@@ -1,31 +1,56 @@
 {
   "name": "logseq-chartrender-plugin",
-  "version": "1.10.1",
-  "description": "",
-  "main": "dist/index.html",
-  "targets": {
-    "main": false
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "parcel build --no-source-maps src/index.html --public-url ./"
-  },
-  "keywords": [],
   "author": "hkgnp",
+  "description": "Render inline charts in Logseq",
   "license": "MIT",
-  "dependencies": {
-    "@logseq/libs": "^0.0.14",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "recharts": "^2.2.0"
-  },
   "logseq": {
     "id": "logseq-chartrender-plugin",
     "title": "logseq-chartrender-plugin",
-    "icon": "./icon.svg"
+    "icon": "./icon.svg",
+    "main": "dist/index.html"
+  },
+  "scripts": {
+    "dev:start": "pnpm add @logseq/libs -S && pnpm add @types/eslint @types/node @typescript-eslint/eslint-plugin @typescript-eslint/parser eslint eslint-config-prettier eslint-plugin-prettier prettier vite vite-plugin-logseq vite-tsconfig-paths typescript -D",
+    "dev:tailwind": "pnpm add tailwindcss cssnano autoprefixer -D && touch tailwind.config.js && touch .postcssrc.cjs && touch src/tailwind.css",
+    "dev": "npx vite",
+    "build": "npx tsc && npx vite build",
+    "preview": "npx vite preview"
+  },
+  "release": {
+    "branches": [
+      "main"
+    ],
+    "plugins": [
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            "logseq-datenlp-plugin.zip"
+          ]
+        }
+      ]
+    ]
+  },
+  "dependencies": {
+    "@logseq/libs": "^0.0.17",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "recharts": "^2.10.4"
   },
   "devDependencies": {
-    "parcel": "^2.8.2",
-    "@types/recharts": "^1.8.24"
+    "@types/eslint": "^8.56.2",
+    "@types/node": "^20.11.0",
+    "@types/react": "^18.2.47",
+    "@types/react-dom": "^18.2.18",
+    "@typescript-eslint/eslint-plugin": "^6.18.1",
+    "@typescript-eslint/parser": "^6.18.1",
+    "eslint": "^8.56.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
+    "prettier": "^3.2.1",
+    "typescript": "^5.3.3",
+    "vite": "^5.0.11",
+    "vite-plugin-logseq": "^1.1.2",
+    "vite-tsconfig-paths": "^4.2.3"
   }
 }

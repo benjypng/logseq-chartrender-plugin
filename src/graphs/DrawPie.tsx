@@ -1,7 +1,7 @@
-import React from 'react';
 import { PieChart, Pie } from 'recharts';
+import { ChartDataProps } from '~/types';
 
-const DrawPie = (props) => {
+const DrawPie = ({ }: ChartDataProps) => {
   const { chartObj, colour } = props;
 
   return (

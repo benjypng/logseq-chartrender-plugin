@@ -1,5 +1,4 @@
-import React from 'react';
-import { AreaChart, CartesianGrid, XAxis, Label, YAxis, Area } from 'recharts';
+import { AreaChart, CartesianGrid, XAxis, Label, YAxis, Area } from "recharts";
 
 const DrawArea = (props) => {
   const { chartObj, colour, chartHeight, chartWidth, xAxisLabel, yAxisLabel } =
@@ -20,7 +19,7 @@ const DrawArea = (props) => {
         label={{
           value: yAxisLabel,
           angle: -90,
-          position: 'insideBottomLeft',
+          position: "insideBottomLeft",
         }}
       />
       (

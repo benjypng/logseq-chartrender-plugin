@@ -1,79 +1,117 @@
-export const createChart = (chartData: any[], chartOptions: string) => {
-  let [chartType, colour, height] = chartOptions.split(' ');
-  const chartHeight = parseFloat(height);
-  const chartWidth = chartHeight * 1.78;
+import { BlockEntity } from "@logseq/libs/dist/LSPlugin.user";
+import { ChartDataProps, ChartProps } from "./types";
 
-  const xAxisLabel = chartData[0].content;
-  const yAxisLabel = chartData[1].content;
-
-  let chartObj: any;
-  if (chartType === 'percentbar') {
-    chartObj = chartData[0].children.map(
-      (val1: { content: string }, index: number) => ({
-        name: val1.content,
-        valueZero: (
-          (parseFloat(chartData[1].children[index].content.split(',')[0]) /
-            parseFloat(chartData[1].children[index].content.split(',')[1])) *
-          100
-        ).toFixed(2),
-        valueOne: (
-          100 -
-          (parseFloat(chartData[1].children[index].content.split(',')[0]) /
-            parseFloat(chartData[1].children[index].content.split(',')[1])) *
+const returnChartData = (
+  chartType: string,
+  chartDataZeroChildren: BlockEntity[],
+  chartDataOneChildren: BlockEntity[],
+): { data: ChartDataProps[]; mostValuesInSeries?: number } => {
+  if (chartType === "percentbar") {
+    const data = chartDataZeroChildren.map(
+      (val1: { content: string }, index: number) => {
+        const numerator = chartDataOneChildren[index]!.content.split(",")[0];
+        const denominator = chartDataOneChildren[index]!.content.split(",")[1];
+        if (!numerator || !denominator) throw new Error();
+        return {
+          name: val1.content,
+          valueZero: (
+            (parseFloat(numerator) / parseFloat(denominator)) *
             100
-        ).toFixed(2),
-      })
+          ).toFixed(2),
+          valueOne: (
+            100 -
+            (parseFloat(numerator) / parseFloat(denominator)) * 100
+          ).toFixed(2),
+        };
+      },
     );
+    return { data };
   } else if (
-    chartType === 'line' ||
-    chartType === 'bar' ||
-    chartType === 'stackedbar'
+    chartType === "line" ||
+    chartType === "bar" ||
+    chartType === "stackedbar"
   ) {
     let mostValuesInSeries = 0;
-    chartObj = chartData[0].children.map(
+    const data = chartDataZeroChildren.map(
       (val1: { content: string }, index: number) => {
         const values: string[] =
-          chartData[1].children[index].content.split(',');
+          chartDataOneChildren[index]!.content.split(",");
 
         if (values.length > mostValuesInSeries) {
           mostValuesInSeries = values.length;
         }
-
-        let returnObj = {
+        const returnObj: ChartDataProps = {
           name: val1.content,
         };
-
         for (let i = 0; i < values.length; i++) {
-          returnObj[`value${i}`] = parseFloat(values[i]);
+          returnObj[`value${i}`] = parseFloat(values[i] as string);
         }
-
         return returnObj;
-      }
+      },
     );
-    chartObj['mostValuesInSeries'] = mostValuesInSeries;
+    return { data, mostValuesInSeries };
   } else {
-    chartObj = chartData[0].children.map(
+    const data = chartDataZeroChildren.map(
       (val1: { content: string }, index: number) => ({
         name: val1.content,
-        value: parseFloat(chartData[1].children[index].content),
-      })
+        value: parseFloat(chartDataOneChildren[index]!.content),
+      }),
     );
+    return { data };
   }
+};
+
+export const createChart = (
+  chartBlocks: BlockEntity[],
+  chartOptions: string,
+): ChartProps | undefined => {
+  const [chartType, colour, height] = chartOptions.split(" ") as [
+    string,
+    string,
+    string,
+    boolean,
+  ];
+  if (!chartType || !colour || !height) return;
+
+  if (
+    chartBlocks.length === 0 ||
+    !chartBlocks[0] ||
+    !chartBlocks[1] ||
+    !chartBlocks[0].children ||
+    !chartBlocks[1].children
+  )
+    throw new Error("Invalid chart options");
+
+  const chartHeight = parseFloat(height);
+  const chartWidth = chartHeight * 1.78;
+
+  const xAxisLabel = chartBlocks[0].content;
+  const yAxisLabel = chartBlocks[1].content;
+
+  const chartDataZeroChildren = chartBlocks[0].children as BlockEntity[];
+  const chartDataOneChildren = chartBlocks[1].children as BlockEntity[];
+
+  const { data: chartData, mostValuesInSeries } = returnChartData(
+    chartType,
+    chartDataZeroChildren,
+    chartDataOneChildren,
+  );
 
   return {
-    chartObj,
-    chartType,
     colour,
-    chartHeight,
+    chartData,
+    chartType,
     chartWidth,
-    xAxisLabel,
+    chartHeight,
     yAxisLabel,
+    xAxisLabel,
+    mostValuesInSeries,
   };
 };
 
 export const randomColours = () => {
-  const letters = '0123456789ABCDEF';
-  let colour = '#';
+  const letters = "0123456789ABCDEF";
+  let colour = "#";
   for (let i = 0; i < 6; i++) {
     colour += letters[Math.floor(Math.random() * 16)];
   }
