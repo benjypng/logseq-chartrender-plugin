@@ -16,6 +16,9 @@ const Chart = ({
   yAxisLabel,
   mostValuesInSeries
 }: ChartProps) => {
+  xAxisLabel = xAxisLabel!.replace("collapsed:: true", "")
+  yAxisLabel = yAxisLabel!.replace("collapsed:: true", "")
+
   return (
     <>
       {chartType === "line" && (

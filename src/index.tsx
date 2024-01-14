@@ -47,7 +47,6 @@ const main = async () => {
         mostValuesInSeries,
       } = chart;
 
-      // Use React to render board
       board = ReactDOMServer.renderToStaticMarkup(
         <Chart
           chartType={chartType}
@@ -64,7 +63,6 @@ const main = async () => {
       board = ReactDOMServer.renderToStaticMarkup(<Instructions />);
     }
 
-    // Set div for renderer to use
     const cmBoard = (board: string) => {
       return `<div id="${chartId}" data-slot-id="${slot}" data-chart-id="${chartId}" data-block-uuid="${uuid}">${board}</div>`;
     };
