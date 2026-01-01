@@ -1,9 +1,11 @@
 import "@logseq/libs";
+
 import { BlockEntity } from "@logseq/libs/dist/LSPlugin.user";
 import ReactDOMServer from "react-dom/server";
-import { createChart } from "./Utils";
-import Instructions from "./Instructions";
+
 import Chart from "./Chart";
+import Instructions from "./Instructions";
+import { createChart } from "./Utils";
 
 const main = async () => {
   console.log("Chart Render plugin loaded");
