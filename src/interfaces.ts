@@ -1,6 +1,6 @@
 export interface ChartContainerProps {
-  uuid: string
-  blockProps: any
+  chartData: ChartData | undefined
+  chartType: ChartTypes
 }
 
 export interface RawChartDataTuple {

@@ -1,12 +1,13 @@
 import '@logseq/libs'
 
-import { MantineProvider } from '@mantine/core'
 import mantineCss from '@mantine/core/styles.css?raw'
 import { createRoot } from 'react-dom/client'
 
 import { ChartContainer } from './components'
-import { mantineThemeOverride } from './constants'
+import { CHART_TYPE_PROP_KEY, mantineThemeOverride } from './constants'
+import { ChartTypes } from './interfaces'
 import { getStableId, scaffoldDbGraph } from './utils'
+import { getLogseqData } from './utils/get-logseq-data'
 
 const main = async () => {
   logseq.provideStyle(mantineCss + mantineThemeOverride)
@@ -48,6 +49,11 @@ const main = async () => {
       }
 
       const blockProps = await logseq.Editor.getBlockProperties(uuid)
+      if (!blockProps) return
+
+      const chartType: ChartTypes = blockProps[CHART_TYPE_PROP_KEY]
+
+      const chartData = await getLogseqData(blockProps)
 
       setTimeout(async () => {
         const el = parent.document.getElementById(chartId)
@@ -60,9 +66,7 @@ const main = async () => {
         }
 
         root.render(
-          <MantineProvider>
-            <ChartContainer uuid={uuid} blockProps={blockProps} />
-          </MantineProvider>,
+          <ChartContainer chartData={chartData} chartType={chartType} />,
         )
       }, 50)
     },
