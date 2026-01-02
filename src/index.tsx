@@ -1,81 +1,71 @@
-import "@logseq/libs";
+import '@logseq/libs'
 
-import { BlockEntity } from "@logseq/libs/dist/LSPlugin.user";
-import ReactDOMServer from "react-dom/server";
+import { MantineProvider } from '@mantine/core'
+import mantineCss from '@mantine/core/styles.css?raw'
+import { createRoot } from 'react-dom/client'
 
-import Chart from "./Chart";
-import Instructions from "./Instructions";
-import { createChart } from "./Utils";
+import { ChartContainer } from './components'
+import { getStableId, scaffoldDbGraph } from './utils'
 
 const main = async () => {
-  console.log("Chart Render plugin loaded");
+  logseq.provideStyle(mantineCss)
+  const isDbGraph = await logseq.App.checkCurrentIsDbGraph()
 
-  // Insert renderer upon slash command
-  logseq.Editor.registerSlashCommand("Render chart", async (e) => {
-    await logseq.Editor.insertAtEditingCursor(`{{renderer :charts_${e.uuid}}}`);
-  });
+  if (!isDbGraph) {
+    logseq.UI.showMsg('logseq-chartrender-plugin: Only DB graphs are supported')
+  }
 
-  logseq.App.onMacroRendererSlotted(async ({ slot, payload }) => {
-    // Get uuid of payload so that child blocks can be retrieved for the board
-    const uuid = payload.uuid;
-    const [type] = payload.arguments;
-    const chartId = `charts_${uuid}_${slot}`;
+  logseq.UI.showMsg('logseq-chartrender-plugin loaded')
 
-    if (!type || !type.startsWith(":charts_")) return;
+  await scaffoldDbGraph()
 
-    const renderBlock = await logseq.Editor.getBlock(uuid, {
-      includeChildren: true,
-    });
-    if (!renderBlock || !renderBlock.children) return;
-
-    const childBlock = renderBlock.children[0] as BlockEntity;
-    const chartBlocks = childBlock.children as BlockEntity[];
-    const chartOptions = childBlock.content;
-    if (!chartBlocks || !chartOptions) return;
-
-    let board = "";
-    if (chartBlocks.length > 0 && chartOptions.length > 0) {
-      const chart = createChart(chartBlocks, chartOptions);
-      if (!chart) return;
-
-      const {
-        chartType,
-        chartData,
-        colour,
-        chartHeight,
-        chartWidth,
-        xAxisLabel,
-        yAxisLabel,
-        mostValuesInSeries,
-      } = chart;
-
-      board = ReactDOMServer.renderToStaticMarkup(
-        <Chart
-          chartType={chartType}
-          chartData={chartData}
-          colour={colour}
-          chartHeight={chartHeight}
-          chartWidth={chartWidth}
-          xAxisLabel={xAxisLabel}
-          yAxisLabel={yAxisLabel}
-          mostValuesInSeries={mostValuesInSeries}
-        />,
-      );
-    } else {
-      board = ReactDOMServer.renderToStaticMarkup(<Instructions />);
+  logseq.Editor.registerSlashCommand('Chart: Render chart', async (e) => {
+    await logseq.Editor.insertAtEditingCursor(`{{renderer :charts_${e.uuid}}}`)
+    const chartTag = await logseq.Editor.getTag('Chart')
+    if (!chartTag) {
+      logseq.UI.showMsg('Chart tag not created', 'error')
+      return
     }
+    await logseq.Editor.addBlockTag(e.uuid, chartTag.uuid)
+  })
 
-    const cmBoard = (board: string) => {
-      return `<div id="${chartId}" data-slot-id="${slot}" data-chart-id="${chartId}" data-block-uuid="${uuid}">${board}</div>`;
-    };
+  logseq.App.onMacroRendererSlotted(
+    async ({ slot, payload: { uuid, arguments: args } }) => {
+      const [type] = args
+      if (!type || !type.startsWith(':charts_')) return
 
-    logseq.provideUI({
-      key: `${chartId}`,
-      slot,
-      reset: true,
-      template: cmBoard(board),
-    });
-  });
-};
+      const chartId = getStableId(uuid, slot)
+      const existingEl = parent.document.getElementById(chartId)
 
-logseq.ready(main).catch(console.error);
+      if (!existingEl) {
+        logseq.provideUI({
+          key: chartId,
+          slot,
+          reset: true,
+          template: `<div id="${chartId}" style="width: 800px; height: 400px; margin: 0 10px 0 20px"></div>`,
+        })
+      }
+
+      const blockProps = await logseq.Editor.getBlockProperties(uuid)
+
+      setTimeout(async () => {
+        const el = parent.document.getElementById(chartId)
+        if (!el || !el.isConnected) return
+
+        let root = (el as any)._reactRoot
+        if (!root) {
+          root = createRoot(el)
+          ;(el as any)._reactRoot = root
+        }
+
+        root.render(
+          <MantineProvider>
+            <ChartContainer uuid={uuid} blockProps={blockProps} />
+          </MantineProvider>,
+        )
+      }, 50)
+    },
+  )
+}
+
+logseq.ready(main).catch(console.error)

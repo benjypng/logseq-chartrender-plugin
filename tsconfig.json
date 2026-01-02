@@ -18,10 +18,10 @@
     "noUncheckedIndexedAccess": true,
     "baseUrl": "./",
     "paths": {
-      "~/*": ["src/*"]
+      "../*": ["src/*"]
     }
   },
-  "include": ["eslint.config.mjs", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs"],
+  "include": [".eslintrc.cjs", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs"],
   "exclude": [
     "node_modules",
     "./dist/**/*",
