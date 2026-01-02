@@ -5,10 +5,11 @@ import mantineCss from '@mantine/core/styles.css?raw'
 import { createRoot } from 'react-dom/client'
 
 import { ChartContainer } from './components'
+import { mantineThemeOverride } from './constants'
 import { getStableId, scaffoldDbGraph } from './utils'
 
 const main = async () => {
-  logseq.provideStyle(mantineCss)
+  logseq.provideStyle(mantineCss + mantineThemeOverride)
   const isDbGraph = await logseq.App.checkCurrentIsDbGraph()
 
   if (!isDbGraph) {
