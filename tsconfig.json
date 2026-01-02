@@ -18,7 +18,7 @@
     "noUncheckedIndexedAccess": true,
     "baseUrl": "./",
     "paths": {
-      "~/*": ["src/*"]
+      "../*": ["src/*"]
     }
   },
   "include": [".eslintrc.cjs", "**/*.ts", "**/*.tsx", "**/*.cjs", "**/*.mjs"],
