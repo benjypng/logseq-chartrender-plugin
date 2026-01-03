@@ -5,6 +5,14 @@ export const getLogseqData = async (blockProps: Record<string, any>) => {
   const tagPageName = blockProps[TAG_PROP_KEY]
   const rawChartProps = blockProps[CHART_PROP_KEY]
 
+  if (!tagPageName || !rawChartProps) {
+    logseq.UI.showMsg(
+      'Plugin tag or properties not setup correctly. Please delete the tag #Chart and the properties #chart-tag and chart-tag, chart-properties and chart-type and re-install the plugin',
+      'error',
+    )
+    return
+  }
+
   const propPages = await Promise.all(
     rawChartProps.map((name: string) => logseq.Editor.getPage(name)),
   )
