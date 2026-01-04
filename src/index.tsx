@@ -1,16 +1,14 @@
 import '@logseq/libs'
 
-import mantineCss from '@mantine/core/styles.css?raw'
 import { createRoot } from 'react-dom/client'
 
 import { ChartContainer } from './components'
-import { CHART_TYPE_PROP_KEY, mantineThemeOverride } from './constants'
+import { CHART_TYPE_PROP_KEY } from './constants'
 import { ChartTypes } from './interfaces'
 import { getStableId, scaffoldDbGraph } from './utils'
 import { getLogseqData } from './utils/get-logseq-data'
 
 const main = async () => {
-  logseq.provideStyle(mantineCss + mantineThemeOverride)
   const isDbGraph = await logseq.App.checkCurrentIsDbGraph()
 
   if (!isDbGraph) {

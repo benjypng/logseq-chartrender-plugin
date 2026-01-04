@@ -33,8 +33,6 @@
   },
   "dependencies": {
     "@logseq/libs": "^0.2.10",
-    "@mantine/core": "^8.3.10",
-    "@mantine/hooks": "^8.3.10",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "recharts": "^3.6.0"
@@ -53,9 +51,6 @@
     "eslint-plugin-prettier": "^5.2.1",
     "eslint-plugin-simple-import-sort": "^12.1.1",
     "husky": "^9.1.7",
-    "postcss": "^8.5.6",
-    "postcss-preset-mantine": "^1.18.0",
-    "postcss-simple-vars": "^7.0.1",
     "prettier": "^3.7.4",
     "typescript": "^5.5.4",
     "typescript-eslint": "^8.51.0",
